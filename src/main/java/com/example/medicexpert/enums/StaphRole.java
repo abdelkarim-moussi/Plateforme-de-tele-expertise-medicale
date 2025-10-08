@@ -1,4 +1,4 @@
-package com.example.medicexpert;
+package com.example.medicexpert.enums;
 
 public enum StaphRole {
     general_doctor,

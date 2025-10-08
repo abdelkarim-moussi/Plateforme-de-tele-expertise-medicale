@@ -1,9 +1,18 @@
 package com.example.medicexpert.entity;
 
-import com.example.medicexpert.StaphRole;
+import com.example.medicexpert.enums.StaphRole;
+import jakarta.persistence.Entity;
 
-public non-sealed class SpecialDoctor extends Staph {
+@Entity
+public class SpecialDoctor extends Staph {
 
+    public SpecialDoctor(){
+        setRole();
+    }
+    public SpecialDoctor(String firstName, String lastName,String email, String phone){
+        super(firstName,lastName,email,phone);
+        setRole();
+    }
     @Override
     public void setRole(){
         this.role = StaphRole.special_doctor;

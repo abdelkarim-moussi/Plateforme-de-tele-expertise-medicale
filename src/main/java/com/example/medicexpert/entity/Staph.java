@@ -1,23 +1,27 @@
 package com.example.medicexpert.entity;
 
-import com.example.medicexpert.StaphRole;
+import com.example.medicexpert.enums.StaphRole;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 
 import java.util.UUID;
 
 @Entity
-public abstract sealed class Staph permits GeneralDoctor, SpecialDoctor, Nerse {
+public abstract class Staph {
     @Id
     protected String id;
     protected String firstName;
     protected String lastName;
     protected String email;
     protected String phone;
+    @Enumerated(EnumType.STRING)
     protected StaphRole role;
 
     public Staph() {
         setId();
+        setRole();
     }
 
     public Staph(String firstName,String lastName, String email, String phone){
