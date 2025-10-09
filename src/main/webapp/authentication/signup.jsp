@@ -20,5 +20,9 @@
     <input type="text" name="role" placeholder="role">
     <button type="submit">register</button>
 </form>
+
+<div>
+  ${errors}
+</div>
 </body>
 </html>

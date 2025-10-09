@@ -4,12 +4,12 @@ import com.example.medicexpert.enums.StaphRole;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Nerse extends Staph {
+public class Nurse extends Staph {
 
-    public Nerse(){
+    public Nurse(){
         setRole();
     }
-    public Nerse(String firstName, String lastName,String email, String phone){
+    public Nurse(String firstName, String lastName,String email, String phone){
         super(firstName,lastName,email,phone);
         setRole();
     }
