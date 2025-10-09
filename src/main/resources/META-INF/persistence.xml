@@ -10,6 +10,7 @@
         <class>com.example.medicexpert.entity.GeneralDoctor</class>
         <class>com.example.medicexpert.entity.SpecialDoctor</class>
         <class>com.example.medicexpert.entity.Nerse</class>
+
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/medicExpert"/>

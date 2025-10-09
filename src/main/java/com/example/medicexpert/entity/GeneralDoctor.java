@@ -6,13 +6,11 @@ import jakarta.persistence.Entity;
 @Entity
 public class GeneralDoctor extends Staph {
 
-    public GeneralDoctor() {
-
-    }
+    public GeneralDoctor() {setRole();}
 
     public GeneralDoctor(String firstName,String lastName, String email, String phone){
         super(firstName,lastName,email,phone);
-
+        setRole();
     }
 
     @Override
