@@ -8,7 +8,7 @@
 
 <h1>Welcome</h1>
 
-<p>Email: ${sessionScope.email}</p>
+<p>user: ${sessionScope.user}</p>
 
 <!-- Optional: Logout link -->
 <a href="logout">Logout</a>

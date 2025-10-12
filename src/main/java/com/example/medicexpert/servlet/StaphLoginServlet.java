@@ -8,6 +8,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.hibernate.Session;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,13 +31,13 @@ public class StaphLoginServlet extends HttpServlet {
 
         if(email == null || email.trim().isEmpty()){
             errors.put("email","email is required");
-        }else if(!Validation.isValidEmail(request.getParameter("email"))){
+        }else if(!Validation.isValidEmail(email)){
             errors.put("email","invalide email format");
         }
 
         if(password == null || password.trim().isEmpty()){
             errors.put("password","password is required");
-        }else if(!Validation.isValidPassword(request.getParameter("password"))){
+        }else if(!Validation.isValidPassword(password)){
             errors.put("password","password must be at least 8 characters");
         }
 
@@ -47,8 +49,11 @@ public class StaphLoginServlet extends HttpServlet {
         }
 
         try{
+            Boolean authenticate = staphAuthenticationService.authenticate(request ,response ,email.trim() ,password);
+            if(authenticate){
+                request.getRequestDispatcher("authentication/welcome.jsp").forward(request,response);
+            }
 
-            staphAuthenticationService.authenticate(request ,response ,email.trim() ,password);
         } catch (Exception e) {
             e.printStackTrace();
             errors.put("login","an error was occurred please try again");

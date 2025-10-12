@@ -1,5 +1,9 @@
 package com.example.medicexpert.validation;
 
+import com.example.medicexpert.enums.StaphRole;
+
+import java.util.Arrays;
+
 public class Validation {
 
     public static Boolean isValidEmail(String email){
@@ -20,7 +24,7 @@ public class Validation {
 
     public static Boolean isValidName(String name){
 
-        String pattern = "^[a-zA-Z]{3,}";
+        String pattern = "^[a-zA-Z]{2,}";
 
         if(name == null) return false;
         return name.matches(pattern);
@@ -32,5 +36,13 @@ public class Validation {
         if(password == null) return false;
         return password.matches(pattern);
 
+    }
+
+    public static Boolean isValidRole(String role){
+
+        if(Arrays.stream(StaphRole.values()).anyMatch(s -> s.name().equals(role))){
+            return true;
+        }
+        return false;
     }
 }

@@ -7,6 +7,7 @@ import com.example.medicexpert.entity.SpecialDoctor;
 import com.example.medicexpert.entity.Staph;
 import com.example.medicexpert.util.exception.RegistrationException;
 import com.example.medicexpert.validation.Validation;
+import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,46 +22,55 @@ import java.util.Map;
 @WebServlet("/signup")
 public class StaphRegisterServlet extends HttpServlet {
 
-    StaphAuthenticationService staphAuthenticationService = new StaphAuthenticationService();
-
-    public StaphRegisterServlet() {
-        super();
-    }
+    @Inject
+    StaphAuthenticationService staphAuthenticationService;
 
     @Override
     public void doPost(HttpServletRequest request , HttpServletResponse response) throws ServletException,IOException{
 
-        String firstName = "";
-        String lastName = "";
-        String email = "";
-        String phone = "";
-        String password = "";
+        String firstName = request.getParameter("firstname");
+        String lastName = request.getParameter("lastname");
+        String email = request.getParameter("email");
+        String phone = request.getParameter("phone");
+        String password = request.getParameter("password");
+        String role = request.getParameter("role");
 
-        String role = "";
         Map<String,String> errors = new HashMap<>();
 
-        if(Validation.isValidName(request.getParameter("first_name"))){
-            firstName = request.getParameter("first_name");
-        }else errors.put("firstName","first name is invalid");
+        if(firstName == null || firstName.trim().isEmpty()){
+            errors.put("firstname","firstname is required");
+        }else if(!Validation.isValidName(firstName.trim())) {
+            errors.put("firstName","first name is invalid");
+        }
 
-        if(Validation.isValidName(request.getParameter("last_name"))){
-            lastName = request.getParameter("last_name");
-        } else errors.put("lastName","last name is invalid");
+        if(lastName == null || lastName.trim().isEmpty()){
+            errors.put("lastName","lastname is required");
+        } else if(!Validation.isValidName(lastName.trim())) {
+            errors.put("lastName","last name is invalid");
+        }
 
-        if(Validation.isValidEmail(request.getParameter("email"))){
-            email = request.getParameter("email");
-        }else errors.put("email","invalid email format");
+        if(email == null || email.trim().isEmpty()){
+            errors.put("email","email is required");
+        }else if(!Validation.isValidEmail(email.trim())) {
+            errors.put("email","invalid email format");
+        }
 
-        if(Validation.isValidPhone(request.getParameter("phone"))){
-            phone = request.getParameter("phone");
-        }else errors.put("phone","invalid phone number");
+        if(phone == null || phone.trim().isEmpty()){
+            errors.put("phone","phone number is required");
+        }else if(!Validation.isValidPhone(phone)) {
+            errors.put("phone","invalid phone number");
+        }
 
-        if(Validation.isValidPassword(request.getParameter("password"))){
-            password = request.getParameter("password");
-        }else errors.put("password","invalid password");
+        if(password == null ||password.trim().isEmpty()){
+            errors.put("password","password is required");
+        }else if(!Validation.isValidPassword(password.trim())){
+            errors.put("password","invalid password");
+        }
 
-        if(role != null && role.trim().isEmpty() ){
-            role = request.getParameter("role");
+        if(role == null || role.trim().isEmpty() ){
+            errors.put("role","role is required");
+        }else if(!Validation.isValidRole(role.trim())){
+            errors.put("role","invalid role");
         }
 
         if(errors.isEmpty()){
@@ -69,9 +79,12 @@ public class StaphRegisterServlet extends HttpServlet {
                 staphAuthenticationService.register(firstName,lastName,email,phone,password,role);
             } catch (RegistrationException e) {
                 e.getMessage();
+                errors.put("staphRegister","there was an error while trying to register this user, try again");
+                request.setAttribute("errors",errors);
+                request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
             }
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/authentication/welcome.jsp");
-            dispatcher.forward(request,response);
+            request.setAttribute("succes","user created successfully");
+            request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
 
         } else {
               request.setAttribute("errors",errors);

@@ -12,6 +12,7 @@ import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 
 import java.io.IOException;
@@ -25,10 +26,10 @@ public class StaphAuthenticationService {
     @Inject
     private Pbkdf2PasswordHash passwordHash;
 
-
+    @Transactional
     public void register(String firstName, String lastName, String email, String phone, String password, String role) throws RegistrationException{
 
-        if(firstName == null || lastName == null || email == null || phone == null || password == null || role != null){
+        if(firstName == null || lastName == null || email == null || phone == null || password == null || role == null){
             throw new RegistrationException("all fields are required");
         }
 
@@ -43,9 +44,9 @@ public class StaphAuthenticationService {
         String hashedPassword = passwordHash.generate(password.toCharArray());
 
         Staph staph = switch(role){
-            case "general_doctor" -> new GeneralDoctor(firstName,lastName,email,phone,password);
-            case "special_doctor" -> new SpecialDoctor(firstName,lastName,email,phone,password);
-            case "nurse" -> new Nurse(firstName,lastName,email,phone,password);
+            case "general_doctor" -> new GeneralDoctor(firstName,lastName,email,phone,hashedPassword);
+            case "special_doctor" -> new SpecialDoctor(firstName,lastName,email,phone,hashedPassword);
+            case "nurse" -> new Nurse(firstName,lastName,email,phone,hashedPassword);
             default -> throw new IllegalStateException("unexpected value "+role);
         };
 
@@ -55,9 +56,24 @@ public class StaphAuthenticationService {
 
 
     @Transactional
-    public boolean authenticate(HttpServletRequest request, HttpServletResponse response, String email, String password) throws ServletException, IOException {
+    public boolean authenticate(HttpServletRequest request, HttpServletResponse response, String email, String password) throws RegistrationException {
 
-        return false;
+        if(email == null || password == null) return false;
+
+        Staph staph = staphDao.findByEmail(email);
+
+        if(staph == null){
+            return false;
+        }
+
+        Boolean valid = passwordHash.verify(password.toCharArray(),staph.getPassword());
+
+        if(valid){
+            HttpSession session = request.getSession();
+            session.setAttribute("user",staph);
+        }
+
+        return valid;
     }
 
 }

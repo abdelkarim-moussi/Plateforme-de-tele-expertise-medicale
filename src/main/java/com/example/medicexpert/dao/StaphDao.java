@@ -1,31 +1,42 @@
 package com.example.medicexpert.dao;
 
 import com.example.medicexpert.entity.Staph;
-import jakarta.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 
+
+@ApplicationScoped
+@Transactional
 public class StaphDao {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    @PersistenceContext(unitName = "medicexpertPU")
+    private EntityManager entityManager;
 
     public void save(Staph staph){
 
         if(staph != null){
+            System.out.println(staph);
             entityManager.persist(staph);
         }
     }
 
-    public boolean existByEmail(String email){
+    public Boolean existByEmail(String email) throws NoResultException {
 
-        Staph staph = entityManager.createQuery("SELECT s FROM Staph s WHERE s.email = :email",Staph.class)
+           Long count = entityManager.createQuery("SELECT COUNT(s) FROM Staph s WHERE s.email = :email",Long.class)
                 .setParameter("email",email)
                 .getSingleResult();
-        if(staph != null) return true;
 
-        return false;
+           return count > 0;
+    }
+
+    public Staph findByEmail(String email){
+
+        return entityManager.createQuery("SELECT s FROM Staph s WHERE s.email = :email",Staph.class)
+                .setParameter("email",email)
+                .getSingleResult();
     }
 
 }

@@ -16,6 +16,6 @@ public class Nurse extends Staph {
 
     @Override
     public void setRole(){
-        this.role = StaphRole.nerse;
+        this.role = StaphRole.nurse;
     }
 }

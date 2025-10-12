@@ -11,12 +11,14 @@
     <title>Login</title>
 </head>
 <body>
-
-<form>
-    <input type="text" placeholder="email">
-    <input type="text" placeholder="password">
+<h1>Login form</h1>
+<form action="${pageContext.request.contextPath}/login" method="post">
+    <input type="text" name="email" placeholder="email">
+    <input type="password" name="password" placeholder="password">
     <button type="submit">login</button>
 </form>
+
+<div>${errors}</div>
 
 </body>
 </html>
