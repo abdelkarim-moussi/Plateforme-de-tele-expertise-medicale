@@ -1,10 +1,7 @@
 package com.example.medicexpert.entity;
 
 import com.example.medicexpert.enums.StaphRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -19,18 +16,22 @@ public abstract class Staph {
     @Enumerated(EnumType.STRING)
     protected StaphRole role;
 
+    @Column(nullable = false)
+    protected String password;
+
     public Staph() {
         setId();
         setRole();
     }
 
-    public Staph(String firstName,String lastName, String email, String phone){
+    public Staph(String firstName,String lastName, String email, String phone, String password){
         setId();
         setRole();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
+        this.password = password;
     }
 
 
@@ -84,6 +85,13 @@ public abstract class Staph {
         return this.role;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     @Override
     public String toString() {

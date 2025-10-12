@@ -8,8 +8,8 @@ public class GeneralDoctor extends Staph {
 
     public GeneralDoctor() {setRole();}
 
-    public GeneralDoctor(String firstName,String lastName, String email, String phone){
-        super(firstName,lastName,email,phone);
+    public GeneralDoctor(String firstName,String lastName, String email, String phone,String password){
+        super(firstName,lastName,email,phone,password);
         setRole();
     }
 

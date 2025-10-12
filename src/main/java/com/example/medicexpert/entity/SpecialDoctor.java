@@ -9,8 +9,8 @@ public class SpecialDoctor extends Staph {
     public SpecialDoctor(){
         setRole();
     }
-    public SpecialDoctor(String firstName, String lastName,String email, String phone){
-        super(firstName,lastName,email,phone);
+    public SpecialDoctor(String firstName, String lastName,String email, String phone, String password){
+        super(firstName,lastName,email,phone,password);
         setRole();
     }
     @Override

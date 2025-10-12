@@ -9,9 +9,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-    Staph generalDoctor = new GeneralDoctor("ali", "barkiki", "mohamed@email.com", "06589543278");
-    Staph specialDoctor = new SpecialDoctor("me", "me", "me@email.com", "06589543278");
-    Staph nurse = new Nurse("halima","3man","halima@email.com","07716186381");
+    Staph generalDoctor = new GeneralDoctor("ali", "barkiki", "mohamed@email.com", "06589543278","abcd1234");
+    Staph specialDoctor = new SpecialDoctor("me", "me", "me@email.com", "06589543278","abcd1234");
+    Staph nurse = new Nurse("halima","3man","halima@email.com","07716186381","abcd1234");
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
     EntityManager entityManager = entityManagerFactory.createEntityManager();
