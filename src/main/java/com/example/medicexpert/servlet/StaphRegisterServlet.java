@@ -1,10 +1,6 @@
 package com.example.medicexpert.servlet;
 
 import com.example.medicexpert.service.StaphAuthenticationService;
-import com.example.medicexpert.entity.GeneralDoctor;
-import com.example.medicexpert.entity.Nurse;
-import com.example.medicexpert.entity.SpecialDoctor;
-import com.example.medicexpert.entity.Staph;
 import com.example.medicexpert.util.exception.RegistrationException;
 import com.example.medicexpert.validation.Validation;
 import jakarta.inject.Inject;
