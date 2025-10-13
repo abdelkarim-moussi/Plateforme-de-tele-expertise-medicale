@@ -44,6 +44,7 @@ public class PatientDao {
     public Patient findByCNI(String CNI){
         EntityManager entityManager = null;
         try {
+            entityManager = entityManagerFactory.createEntityManager();
             return entityManager.createQuery("SELECT p FROM Patient p WHERE p.CNI = :CNI",Patient.class)
                     .setParameter("CNI",CNI)
                     .getSingleResult();
@@ -59,6 +60,7 @@ public class PatientDao {
     public boolean existByCNI(String CNI){
         EntityManager entityManager = null;
         try {
+            entityManager = entityManagerFactory.createEntityManager();
             long count = entityManager.createQuery("SELECT COUNT(p) FROM Patient p WHERE p.CNI = :CNI",long.class)
                     .setParameter("CNI",CNI)
                     .getSingleResult();
