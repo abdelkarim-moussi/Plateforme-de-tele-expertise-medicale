@@ -21,8 +21,6 @@ public class PatientDao {
                 entityManager = entityManagerFactory.createEntityManager();
                 entityManager.getTransaction().begin();
                 entityManager.persist(patient);
-                entityManager.persist(medicalData);
-                entityManager.persist(vitalSigns);
                 entityManager.getTransaction().commit();
 
             }catch (Exception e){
@@ -36,7 +34,26 @@ public class PatientDao {
                 }
             }
 
-
         }
+    }
+
+    public void update(Patient patient){
+
+    }
+
+    public boolean existByCNI(String CNI){
+        EntityManager entityManager = null;
+        try {
+            long count = entityManager.createQuery("SELECT COUNT(p) FROM Patient p WHERE p.CNI = :CNI",long.class)
+                    .setParameter("CNI",CNI)
+                    .getSingleResult();
+            return count > 0;
+
+        }finally {
+            if(entityManager != null){
+                entityManager.close();
+            }
+        }
+
     }
 }

@@ -2,6 +2,7 @@ package com.example.medicexpert.listener;
 
 import com.example.medicexpert.dao.PatientDao;
 import com.example.medicexpert.dao.StaphDao;
+import com.example.medicexpert.service.PatientService;
 import com.example.medicexpert.service.StaphAuthenticationService;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -21,6 +22,7 @@ public class AppContextListener implements ServletContextListener {
             StaphDao staphDao = new StaphDao(entityMFactory);
             PatientDao patientDao = new PatientDao(entityMFactory);
             StaphAuthenticationService staphAuthenticationService = new StaphAuthenticationService(staphDao);
+            PatientService patientService = new PatientService(patientDao);
 
             sce.getServletContext().setAttribute("entityManagerFactory",entityMFactory);
             sce.getServletContext().setAttribute("staphAuthService",staphAuthenticationService);

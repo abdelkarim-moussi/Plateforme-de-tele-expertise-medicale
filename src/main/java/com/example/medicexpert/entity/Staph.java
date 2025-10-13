@@ -12,6 +12,7 @@ public abstract class Staph {
     protected String id;
     protected String firstName;
     protected String lastName;
+    @Column(unique = true)
     protected String email;
     protected String phone;
     @Enumerated(EnumType.STRING)

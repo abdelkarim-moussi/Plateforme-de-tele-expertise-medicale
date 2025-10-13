@@ -6,21 +6,26 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "patient")
-public abstract class Patient {
+public class Patient {
     @Id
     private String id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
     private String phone;
     private LocalDate dateOfBirth;
+    @Column(unique = true)
+    private String CNI;
     private String socialSecurityNumber;
     private String address;
 
 
     public Patient() {}
 
-    public Patient(String firstName, String lastName, String email, String phone, LocalDate dateOfBirth,String socialSecurityNumber, String address){
+    public Patient(String firstName, String lastName, String email,
+                   String phone, LocalDate dateOfBirth,String socialSecurityNumber,
+                   String address, String CNI){
         this.id = generateId();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,6 +34,7 @@ public abstract class Patient {
         this.dateOfBirth = dateOfBirth;
         this.socialSecurityNumber = socialSecurityNumber;
         this.address = address;
+        this.CNI = CNI;
     }
 
     public String getId() {
@@ -93,6 +99,14 @@ public abstract class Patient {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCNI() {
+        return CNI;
+    }
+
+    public void setCNI(String CNI) {
+        this.CNI = CNI;
     }
 
     private String generateId(){
