@@ -26,6 +26,7 @@ public class AppContextListener implements ServletContextListener {
 
             sce.getServletContext().setAttribute("entityManagerFactory",entityMFactory);
             sce.getServletContext().setAttribute("staphAuthService",staphAuthenticationService);
+            sce.getServletContext().setAttribute("patientService",patientService);
 
         }catch (Exception e){
             e.printStackTrace();

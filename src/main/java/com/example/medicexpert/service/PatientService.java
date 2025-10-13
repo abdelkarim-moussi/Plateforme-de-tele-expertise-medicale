@@ -3,7 +3,6 @@ package com.example.medicexpert.service;
 import com.example.medicexpert.dao.PatientDao;
 import com.example.medicexpert.entity.Patient;
 import com.example.medicexpert.util.exception.PatientRegistrationException;
-import jakarta.persistence.EntityManager;
 
 import java.time.LocalDate;
 
