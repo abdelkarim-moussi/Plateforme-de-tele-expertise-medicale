@@ -19,7 +19,7 @@ public class StaphAuthenticationService {
     private StaphDao staphDao;
 
     public StaphAuthenticationService(StaphDao staphDao){
-     this.staphDao = staphDao;
+        this.staphDao = staphDao;
     }
 
 
@@ -88,5 +88,6 @@ public class StaphAuthenticationService {
 
         return verify;
     }
+
 
 }

@@ -8,7 +8,9 @@
         <class>com.example.medicexpert.entity.Staph</class>
         <class>com.example.medicexpert.entity.SpecialDoctor</class>
         <class>com.example.medicexpert.entity.GeneralDoctor</class>
-        <class>com.example.medicexpert.entity.Nurse</class>
+        <class>com.example.medicexpert.entity.Patient</class>
+        <class>com.example.medicexpert.entity.MedicalData</class>
+        <class>com.example.medicexpert.entity.VitalSigns</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>

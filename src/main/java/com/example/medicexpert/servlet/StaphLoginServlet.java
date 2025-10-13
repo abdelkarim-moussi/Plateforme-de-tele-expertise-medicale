@@ -51,10 +51,11 @@ public class StaphLoginServlet extends HttpServlet {
         }
 
         try{
-//            Boolean authenticate = staphAuthenticationService.authenticate(request ,response ,email.trim() ,password);
-//            if(authenticate){
-//                request.getRequestDispatcher("authentication/welcome.jsp").forward(request,response);
-//            }
+            boolean authenticate = staphAuthenticationService.authenticate(request ,response ,email.trim() ,password);
+            System.out.println(authenticate);
+            if(authenticate){
+                request.getRequestDispatcher("/authentication/welcome.jsp").forward(request,response);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

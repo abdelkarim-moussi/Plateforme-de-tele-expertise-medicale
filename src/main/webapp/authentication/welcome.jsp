@@ -9,6 +9,7 @@
 <h1>Welcome</h1>
 
 <p>user: ${sessionScope.user}</p>
+<p>${errors}</p>
 
 <!-- Optional: Logout link -->
 <a href="logout">Logout</a>
