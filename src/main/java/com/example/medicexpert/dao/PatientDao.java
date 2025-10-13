@@ -13,7 +13,7 @@ public class PatientDao {
         this.entityManagerFactory = entityManagerFactory;
     }
 
-    public void save(Patient patient, MedicalData medicalData, VitalSigns vitalSigns){
+    public void save(Patient patient){
         EntityManager entityManager = null;
 
         if(patient != null){
@@ -38,6 +38,21 @@ public class PatientDao {
     }
 
     public void update(Patient patient){
+
+    }
+
+    public Patient findByCNI(String CNI){
+        EntityManager entityManager = null;
+        try {
+            return entityManager.createQuery("SELECT p FROM Patient p WHERE p.CNI = :CNI",Patient.class)
+                    .setParameter("CNI",CNI)
+                    .getSingleResult();
+
+        }finally {
+            if(entityManager != null){
+                entityManager.close();
+            }
+        }
 
     }
 

@@ -21,37 +21,28 @@ public class PatientService {
         if(firstName == null || lastName == null || email == null || dateOfBirth == null || address == null){
             throw new PatientRegistrationException("one or more of required fields is not set");
         }
-
+        Patient patient;
         if(patientDao.existByCNI(CNI)){
-            EntityManager entityManager = null;
 
-            Patient patient = new Patient();
+            patient = patientDao.findByCNI(CNI);
             patient.setFirstName(firstName);
             patient.setLastName(lastName);
             patient.setEmail(email);
             patient.setDateOfBirth(dateOfBirth);
             patient.setAddress(address);
 
-            if(patient != null){
-                try{
-                    entityManager = entityManagerFactory.createEntityManager();
-                    entityManager.getTransaction().begin();
-                    entityManager.persist(patient);
-                    entityManager.getTransaction().commit();
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                    if(entityManager != null && entityManager.getTransaction().isActive()){
-                        entityManager.getTransaction().rollback();
-                    }
-                }finally {
-                    if(entityManager != null){
-                        entityManager.close();
-                    }
-                }
-
-
+            if(phone != null ){
+                patient.setPhone(phone);
             }
+            if(socialSecurityNumber != null){
+                patient.setSocialSecurityNumber(socialSecurityNumber);
+            }
+
+            patientDao.update(patient);
+
+        }else {
+            patient = new Patient(firstName, lastName, email, phone, dateOfBirth, socialSecurityNumber, address, CNI);
+            patientDao.save(patient);
         }
 
     }
