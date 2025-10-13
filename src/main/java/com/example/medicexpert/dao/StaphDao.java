@@ -1,42 +1,70 @@
 package com.example.medicexpert.dao;
 
 import com.example.medicexpert.entity.Staph;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
+import jakarta.persistence.*;
 
-
-@ApplicationScoped
-@Transactional
 public class StaphDao {
 
-    @PersistenceContext(unitName = "medicexpertPU")
-    private EntityManager entityManager;
+    private EntityManagerFactory entityManagerFactory;
+
+    public StaphDao(EntityManagerFactory entityManagerFactory){
+        this.entityManagerFactory = entityManagerFactory;
+    }
+
 
     public void save(Staph staph){
+        EntityManager entityManager = null;
 
         if(staph != null){
-            System.out.println(staph);
-            entityManager.persist(staph);
+            try{
+                entityManager = entityManagerFactory.createEntityManager();
+                entityManager.getTransaction().begin();
+                entityManager.persist(staph);
+                entityManager.getTransaction().commit();
+
+            }catch (Exception e){
+                e.printStackTrace();
+                if(entityManager != null && entityManager.getTransaction().isActive()){
+                    entityManager.getTransaction().rollback();
+                }
+            }finally {
+                if(entityManager != null){
+                    entityManager.close();
+                }
+            }
         }
     }
 
-    public Boolean existByEmail(String email) throws NoResultException {
 
-           Long count = entityManager.createQuery("SELECT COUNT(s) FROM Staph s WHERE s.email = :email",Long.class)
-                .setParameter("email",email)
-                .getSingleResult();
+    public boolean existByEmail(String email) throws NoResultException {
 
+        EntityManager entityManager = null;
+        try{
+            entityManager = entityManagerFactory.createEntityManager();
+               Long count = entityManager.createQuery("SELECT COUNT(s) FROM Staph s WHERE s.email = :email",Long.class)
+                    .setParameter("email",email)
+                    .getSingleResult();
            return count > 0;
+
+        }finally {
+            if(entityManager != null){
+                entityManager.close();
+            }
+        }
     }
 
     public Staph findByEmail(String email){
-
-        return entityManager.createQuery("SELECT s FROM Staph s WHERE s.email = :email",Staph.class)
-                .setParameter("email",email)
-                .getSingleResult();
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            return entityManager.createQuery("SELECT s FROM Staph s WHERE s.email = :email", Staph.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        }finally {
+            if(entityManager != null){
+                entityManager.close();
+            }
+        }
     }
 
 }

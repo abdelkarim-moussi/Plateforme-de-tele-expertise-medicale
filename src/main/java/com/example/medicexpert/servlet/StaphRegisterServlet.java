@@ -1,10 +1,13 @@
 package com.example.medicexpert.servlet;
 
+import com.example.medicexpert.dao.StaphDao;
+import com.example.medicexpert.listener.AppContextListener;
 import com.example.medicexpert.service.StaphAuthenticationService;
 import com.example.medicexpert.util.exception.RegistrationException;
 import com.example.medicexpert.validation.Validation;
-import jakarta.inject.Inject;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,8 +21,16 @@ import java.util.Map;
 @WebServlet("/signup")
 public class StaphRegisterServlet extends HttpServlet {
 
-    @Inject
-    StaphAuthenticationService staphAuthenticationService;
+    private StaphAuthenticationService staphAuthenticationService;
+
+    @Override
+    public void init() throws ServletException{
+        staphAuthenticationService = (StaphAuthenticationService) getServletContext().getAttribute("staphAuthService");
+
+        if(staphAuthenticationService == null){
+            throw new ServletException("StaphAuthentication Service not initialized");
+        }
+    }
 
     @Override
     public void doPost(HttpServletRequest request , HttpServletResponse response) throws ServletException,IOException{
@@ -78,6 +89,7 @@ public class StaphRegisterServlet extends HttpServlet {
                 errors.put("staphRegister","there was an error while trying to register this user, try again");
                 request.setAttribute("errors",errors);
                 request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
+                return;
             }
             request.setAttribute("succes","user created successfully");
             request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);

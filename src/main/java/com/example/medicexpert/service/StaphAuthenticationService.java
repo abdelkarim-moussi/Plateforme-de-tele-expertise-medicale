@@ -6,27 +6,23 @@ import com.example.medicexpert.entity.Nurse;
 import com.example.medicexpert.entity.SpecialDoctor;
 import com.example.medicexpert.entity.Staph;
 import com.example.medicexpert.util.exception.RegistrationException;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.security.enterprise.identitystore.Pbkdf2PasswordHash;
-import jakarta.servlet.ServletException;
+import com.password4j.BcryptFunction;
+import com.password4j.Hash;
+import com.password4j.Password;
+import com.password4j.types.Bcrypt;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.transaction.Transactional;
 
-import java.io.IOException;
-
-@ApplicationScoped
 public class StaphAuthenticationService {
 
-    @Inject
     private StaphDao staphDao;
 
-    @Inject
-    private Pbkdf2PasswordHash passwordHash;
+    public StaphAuthenticationService(StaphDao staphDao){
+     this.staphDao = staphDao;
+    }
 
-    @Transactional
+
     public void register(String firstName, String lastName, String email, String phone, String password, String role) throws RegistrationException{
 
         if(firstName == null || lastName == null || email == null || phone == null || password == null || role == null){
@@ -41,7 +37,7 @@ public class StaphAuthenticationService {
             throw new RegistrationException("password must be at least 8 characters");
         }
 
-        String hashedPassword = passwordHash.generate(password.toCharArray());
+        String hashedPassword = passwordHash(password);
 
         Staph staph = switch(role){
             case "general_doctor" -> new GeneralDoctor(firstName,lastName,email,phone,hashedPassword);
@@ -54,8 +50,6 @@ public class StaphAuthenticationService {
 
     }
 
-
-    @Transactional
     public boolean authenticate(HttpServletRequest request, HttpServletResponse response, String email, String password) throws RegistrationException {
 
         if(email == null || password == null) return false;
@@ -66,7 +60,7 @@ public class StaphAuthenticationService {
             return false;
         }
 
-        Boolean valid = passwordHash.verify(password.toCharArray(),staph.getPassword());
+        boolean valid = verify(password,staph.getPassword());
 
         if(valid){
             HttpSession session = request.getSession();
@@ -74,6 +68,25 @@ public class StaphAuthenticationService {
         }
 
         return valid;
+    }
+
+    private String passwordHash(String password){
+        BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B,12);
+
+        Hash hash = Password.hash(password)
+                .addPepper("shared-secret")
+                .with(bcrypt);
+
+        return hash.getResult();
+    }
+    private boolean verify(String password , String hashedPassword){
+        BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B,12);
+
+        boolean verify = Password.check(password,hashedPassword)
+                .addPepper("shared-secret")
+                .with(bcrypt);
+
+        return verify;
     }
 
 }

@@ -2,25 +2,27 @@ package com.example.medicexpert.servlet;
 
 import com.example.medicexpert.service.StaphAuthenticationService;
 import com.example.medicexpert.validation.Validation;
-import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import org.hibernate.Session;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/login")
 public class StaphLoginServlet extends HttpServlet {
 
-    @Inject
-    StaphAuthenticationService staphAuthenticationService;
+    private StaphAuthenticationService staphAuthenticationService;
 
+    @Override
+    public void init() throws ServletException{
+        staphAuthenticationService = (StaphAuthenticationService) getServletContext().getAttribute("staphAuthService");
+
+        if(staphAuthenticationService == null){
+            throw new ServletException("StaphAuthentication Service not initialized");
+        }
+    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,IOException{
 
@@ -49,10 +51,10 @@ public class StaphLoginServlet extends HttpServlet {
         }
 
         try{
-            Boolean authenticate = staphAuthenticationService.authenticate(request ,response ,email.trim() ,password);
-            if(authenticate){
-                request.getRequestDispatcher("authentication/welcome.jsp").forward(request,response);
-            }
+//            Boolean authenticate = staphAuthenticationService.authenticate(request ,response ,email.trim() ,password);
+//            if(authenticate){
+//                request.getRequestDispatcher("authentication/welcome.jsp").forward(request,response);
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();

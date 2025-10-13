@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "staph")
 public abstract class Staph {
     @Id
     protected String id;
@@ -20,24 +21,18 @@ public abstract class Staph {
     protected String password;
 
     public Staph() {
-        setId();
-        setRole();
     }
 
     public Staph(String firstName,String lastName, String email, String phone, String password){
-        setId();
-        setRole();
+        this.id = generateId();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        setRole();
     }
 
-
-    public void setId() {
-        this.id = UUID.randomUUID().toString().substring(0,10).replace("-","");
-    }
 
     public String getId() {
         return id;
@@ -91,6 +86,10 @@ public abstract class Staph {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    private String generateId(){
+        return UUID.randomUUID().toString().substring(0,12).replace("-","");
     }
 
     @Override
