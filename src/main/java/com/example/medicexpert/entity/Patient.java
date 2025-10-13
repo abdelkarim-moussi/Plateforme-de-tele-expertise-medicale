@@ -1,38 +1,35 @@
 package com.example.medicexpert.entity;
-
-import com.example.medicexpert.enums.StaphRole;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-@Table(name = "staph")
-public abstract class Staph {
+@Table(name = "patient")
+public abstract class Patient {
     @Id
-    protected String id;
-    protected String firstName;
-    protected String lastName;
-    protected String email;
-    protected String phone;
-    @Enumerated(EnumType.STRING)
-    protected StaphRole role;
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private LocalDate dateOfBirth;
+    private String socialSecurityNumber;
+    private String address;
 
-    @Column(nullable = false)
-    protected String password;
 
-    public Staph() {
-    }
+    public Patient() {}
 
-    public Staph(String firstName,String lastName, String email, String phone, String password){
+    public Patient(String firstName, String lastName, String email, String phone, LocalDate dateOfBirth,String socialSecurityNumber, String address){
         this.id = generateId();
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phone = phone;
-        this.password = password;
-        setRole();
+        this.dateOfBirth = dateOfBirth;
+        this.socialSecurityNumber = socialSecurityNumber;
+        this.address = address;
     }
-
 
     public String getId() {
         return id;
@@ -74,27 +71,38 @@ public abstract class Staph {
         this.phone = phone;
     }
 
-    public abstract void setRole();
-
-    public StaphRole getRole(){
-        return this.role;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public String getPassword() {
-        return password;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getSocialSecurityNumber() {
+        return socialSecurityNumber;
+    }
+
+    public void setSocialSecurityNumber(String socialSecurityNumber) {
+        this.socialSecurityNumber = socialSecurityNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     private String generateId(){
         return UUID.randomUUID().toString().substring(0,12).replace("-","");
     }
 
+
     @Override
     public String toString() {
-        return "Staph{" +
+        return "Patient{" +
                 "\nid='" + id + '\'' +
                 "\nfirstName='" + firstName + '\'' +
                 "\nlastName='" + lastName + '\'' +
