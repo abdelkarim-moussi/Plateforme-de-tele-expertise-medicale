@@ -11,8 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class NurseDashboardServlet extends HttpServlet {
 
@@ -37,14 +36,36 @@ public class NurseDashboardServlet extends HttpServlet {
         String securityNumber = request.getParameter("securityNumber");
         String address = request.getParameter("address");
         String CNI = request.getParameter("CNI");
+        //Medical Data
+        String antecedents = request.getParameter("antecedents");
+        String allergies = request.getParameter("allergies");
+        String ongoingTreatment = request.getParameter("ongoingTreatment");
+        //Vital Signs
+        float height = Float.parseFloat(request.getParameter("height"));
+        float weight = Float.parseFloat(request.getParameter("weight"));
+        short respiratoryRate = Short.parseShort(request.getParameter("respiratoryRate"));
+        float bodyTemperature = Float.parseFloat(request.getParameter("bodyTemperature"));
+        short heartRate = Short.parseShort(request.getParameter("heartRate"));
+        float bloodPressure = Float.parseFloat(request.getParameter("bloodPressure"));
+
+        Map<String,Object> medicalData = new HashMap<>();
+        Map<String,Object> vitalSigns = new HashMap<>();
+
+        medicalData.put("antecedents",antecedents);
+        medicalData.put("allergies",allergies);
+        medicalData.put("ongoingTreatment",ongoingTreatment);
+        vitalSigns.put("height",height);
+        vitalSigns.put("weight",weight);
+        vitalSigns.put("respiratoryRate",respiratoryRate);
+        vitalSigns.put("bodyTemperature",bodyTemperature);
+        vitalSigns.put("heartRate",heartRate);
+        vitalSigns.put("bloodPressure",bloodPressure);
 
         if(this.validateFields(firstName,lastName,email,phone,
                 dateOfBirth,securityNumber,address,CNI)){
             try{
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate date = LocalDate.parse(dateOfBirth,formatter);
-                System.out.println(date);
-                patientService.registerPatient(firstName,lastName,email,phone, LocalDate.parse(dateOfBirth,formatter), securityNumber, address, CNI);
+                patientService.registerPatient(firstName,lastName,email,phone, LocalDate.parse(dateOfBirth,formatter), securityNumber, address, CNI,medicalData,vitalSigns);
 
             }catch (PatientRegistrationException e){
                 e.printStackTrace();

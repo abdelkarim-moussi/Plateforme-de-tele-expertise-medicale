@@ -20,6 +20,13 @@ public class Patient {
     private String socialSecurityNumber;
     private String address;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicaldata_id",referencedColumnName = "id")
+    private MedicalData medicalData;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "vitaldigns_id",referencedColumnName = "id")
+    private VitalSigns vitalSigns;
 
     public Patient() {}
 
@@ -113,6 +120,21 @@ public class Patient {
         return UUID.randomUUID().toString().substring(0,12).replace("-","");
     }
 
+    public MedicalData getMedicalData() {
+        return medicalData;
+    }
+
+    public void setMedicalData(MedicalData medicalData) {
+        this.medicalData = medicalData;
+    }
+
+    public VitalSigns getVitalSigns() {
+        return vitalSigns;
+    }
+
+    public void setVitalSigns(VitalSigns vitalSigns) {
+        this.vitalSigns = vitalSigns;
+    }
 
     @Override
     public String toString() {

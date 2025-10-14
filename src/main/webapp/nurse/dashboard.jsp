@@ -21,7 +21,18 @@
     <input type="date" name="dateOfBirth" class="input"/>
     <input type="text" name="securityNumber" placeholder="securityNumber" class="input"/>
     <input type="text" name="address" placeholder="address" class="input"/>
-    <input type="text" name="CNI" placeholder="CNI" class="input"/>
+    <h2>Medical Data</h2>
+    <input type="text" name="antecedents" placeholder="antecedents" class="input"/>
+    <input type="text" name="allergies" placeholder="allergies" class="input"/>
+    <input type="text" name="ongoingTreatment" placeholder="ongoingTreatment" class="input"/>
+    <h2>Vital signs</h2>
+    <input type="number" name="height" placeholder="height">
+    <input type="number" name="weight" placeholder="weight">
+    <input type="number" name="respiratoryRate" placeholder="respiratoryRate">
+    <input type="number" name="bodyTemperature" placeholder="bodyTemperature">
+    <input type="number" name="heartRate" placeholder="heartRate">
+    <input type="number" name="bloodPressure" placeholder="bloodPressure">
+
     <button type="submit" style="height: 35px;background-color: black;color: white">Register</button>
 </form>
 </body>

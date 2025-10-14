@@ -73,4 +73,34 @@ public class PatientDao {
         }
 
     }
+
+    public MedicalData findMedicalDataByPatient(Patient patient){
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            return entityManager.createQuery("SELECT m FROM MedicalData m WHERE m.patient = :patient",MedicalData.class)
+                    .setParameter("patient",patient)
+                    .getSingleResult();
+
+        }finally {
+            if(entityManager != null){
+                entityManager.close();
+            }
+        }
+    }
+
+    public VitalSigns findVitalSignsByPatient(Patient patient){
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            return entityManager.createQuery("SELECT v FROM VitalSigns v WHERE v.patient = :patient",VitalSigns.class)
+                    .setParameter("patient",patient)
+                    .getSingleResult();
+
+        }finally {
+            if(entityManager != null){
+                entityManager.close();
+            }
+        }
+    }
 }
