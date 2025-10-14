@@ -38,15 +38,7 @@ public class PatientService {
             this.setMedicalData(mData,patient,medicalData);
             this.setVitalSigns(vSigns,patient,vitalSigns);
 
-
-            if(phone != null ){
-                patient.setPhone(phone);
-            }
-            if(socialSecurityNumber != null){
-                patient.setSocialSecurityNumber(socialSecurityNumber);
-            }
-
-            patientDao.update(patient);
+            patientDao.update(patient,mData,vSigns);
 
         }else {
             patient = new Patient(firstName, lastName, email, phone, dateOfBirth, socialSecurityNumber, address, CNI);
@@ -65,12 +57,19 @@ public class PatientService {
     }
 
     private void setPatientData(Patient patient ,String firstName, String lastName,String email,
-                                   String phone, LocalDate dateOfBirth, String address, String securityNum){
+                                   String phone, LocalDate dateOfBirth, String address, String socialSecurityNumber){
         patient.setFirstName(firstName);
         patient.setLastName(lastName);
         patient.setEmail(email);
         patient.setDateOfBirth(dateOfBirth);
         patient.setAddress(address);
+
+        if(phone != null ){
+            patient.setPhone(phone);
+        }
+        if(socialSecurityNumber != null){
+            patient.setSocialSecurityNumber(socialSecurityNumber);
+        }
     }
 
     private void setMedicalData(MedicalData medicalData, Patient patient, Map<String,Object> data){

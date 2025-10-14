@@ -37,8 +37,66 @@ public class PatientDao {
         }
     }
 
-    public void update(Patient patient){
+    public void update(Patient patient, MedicalData medicalData, VitalSigns vitalSigns){
+        EntityManager entityManager = null;
 
+        if(patient != null){
+                String updatePatientQuery = "UPDATE Patient p SET firstName = :firstName, lastName =:lastname, email =:email," +
+                                            "address = :address, dateOfBirth =:dateOfBirth, phone= :phone, " +
+                                            "socialSecurityNumber =:socialSecurityNumber,CNI = :CNI WHERE p.id =:id";
+
+                String updateMDataQuery = "UPDATE MedicalData m SET allergies =:alergies, antecedents =:antecedents," +
+                                           "ongoingTreatment =:ongoingTreatment WHERE m.id =:id";
+                String updateVSignsQuery = "UPDATE VitalSigns v SET height =:height , weight =:weight, respiratoryRate =:respiratoryRate," +
+                                           "heartRate =:heartRate, bloodPressure =:bloodPressure,bodyTemperature =:bodyTemperature WHERE v.id=:id";
+            try{
+
+                entityManager = entityManagerFactory.createEntityManager();
+
+                entityManager.getTransaction().begin();
+                entityManager.createQuery(updatePatientQuery)
+                        .setParameter("firstName",patient.getFirstName())
+                        .setParameter("lastname",patient.getLastName())
+                        .setParameter("email",patient.getEmail())
+                        .setParameter("address",patient.getAddress())
+                        .setParameter("dateOfBirth",patient.getDateOfBirth())
+                        .setParameter("phone",patient.getPhone())
+                        .setParameter("socialSecurityNumber",patient.getSocialSecurityNumber())
+                        .setParameter("CNI",patient.getCNI())
+                        .setParameter("id",patient.getId())
+                        .executeUpdate();
+                //update medical data
+                entityManager.createQuery(updateMDataQuery)
+                        .setParameter("alergies",medicalData.getAllergies())
+                        .setParameter("antecedents",medicalData.getAntecedents())
+                        .setParameter("ongoingTreatment",medicalData.getOngoingTreatment())
+                        .setParameter("id",medicalData.getId())
+                        .executeUpdate();
+                //update vital signs
+                entityManager.createQuery(updateVSignsQuery)
+                        .setParameter("height",vitalSigns.getHeight())
+                        .setParameter("weight",vitalSigns.getWeight())
+                        .setParameter("respiratoryRate",vitalSigns.getRespiratoryRate())
+                        .setParameter("heartRate",vitalSigns.getHeartRate())
+                        .setParameter("bloodPressure",vitalSigns.getBloodPressure())
+                        .setParameter("bodyTemperature",vitalSigns.getBodyTemperature())
+                        .setParameter("id",vitalSigns.getId())
+                        .executeUpdate();
+
+                entityManager.getTransaction().commit();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                if(entityManager != null && entityManager.getTransaction().isActive()){
+                    entityManager.getTransaction().rollback();
+                }
+            }finally {
+                if(entityManager != null){
+                    entityManager.close();
+                }
+            }
+
+        }
     }
 
     public Patient findByCNI(String CNI){
