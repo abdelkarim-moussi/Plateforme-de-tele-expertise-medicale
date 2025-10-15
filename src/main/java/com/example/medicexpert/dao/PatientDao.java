@@ -6,6 +6,9 @@ import com.example.medicexpert.entity.VitalSigns;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PatientDao {
 
     private EntityManagerFactory entityManagerFactory;
@@ -34,6 +37,27 @@ public class PatientDao {
                 }
             }
 
+        }
+    }
+
+    public List<Patient> findAllByQueueId(Long id){
+        EntityManager entityManager = null;
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+            List<Patient> dbPatients = null;
+            dbPatients = entityManager.createQuery("SELECT p FROM Patient p WHERE p.waitingQueue.id =:id",Patient.class)
+                    .setParameter("id",id)
+                    .getResultList();
+
+            entityManager.getTransaction().commit();
+
+            return dbPatients;
+
+        }finally {
+            if (entityManager != null){
+                entityManager.close();
+            }
         }
     }
 

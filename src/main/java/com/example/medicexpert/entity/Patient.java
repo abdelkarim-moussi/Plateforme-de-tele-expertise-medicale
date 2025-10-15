@@ -2,6 +2,7 @@ package com.example.medicexpert.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -19,6 +20,7 @@ public class Patient {
     private String CNI;
     private String socialSecurityNumber;
     private String address;
+    private LocalTime arrivalTime;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "medicaldata_id",referencedColumnName = "id")
@@ -27,6 +29,10 @@ public class Patient {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "vitaldigns_id",referencedColumnName = "id")
     private VitalSigns vitalSigns;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "queue_id")
+    private WaitingQueue waitingQueue;
 
     public Patient() {}
 
@@ -136,6 +142,22 @@ public class Patient {
         this.vitalSigns = vitalSigns;
     }
 
+    public WaitingQueue getWaitingQueue() {
+        return waitingQueue;
+    }
+
+    public void setWaitingQueue(WaitingQueue waitingQueue) {
+        this.waitingQueue = waitingQueue;
+    }
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
     @Override
     public String toString() {
         return "Patient{" +
@@ -146,4 +168,6 @@ public class Patient {
                 "\nphone='" + phone + '\'' +
                 '}';
     }
+
+
 }

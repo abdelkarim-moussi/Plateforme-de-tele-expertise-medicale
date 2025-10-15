@@ -14,7 +14,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +82,7 @@ public class PatientService {
             waitingQueueDao.update(registeredQueue);
         }
         else{
-            WaitingQueue queue = new WaitingQueue(patients, LocalDate.now(), LocalTime.now());
+            WaitingQueue queue = new WaitingQueue(patients, LocalDate.now());
             waitingQueueDao.save(queue);
         }
 
@@ -117,5 +119,22 @@ public class PatientService {
         vitalSigns.setHeartRate(Short.parseShort(data.get("heartRate").toString()));
         vitalSigns.setBloodPressure(Float.parseFloat(data.get("bloodPressure").toString()));
         vitalSigns.setPatient(patient);
+    }
+
+    public List<Patient> getActualQueuePatients(){
+
+        WaitingQueue queue = waitingQueueDao.findByDate(LocalDate.now());
+        List<Patient> patients = patientDao.findAllByQueueId(queue.getId());
+        List<Patient> filteredPatients = null;
+
+        if(!patients.isEmpty()){
+            filteredPatients = patients.stream()
+                    .sorted(Comparator.comparing(Patient::getArrivalTime)
+                    .reversed())
+                    .toList();
+        }
+
+        return filteredPatients;
+
     }
 }

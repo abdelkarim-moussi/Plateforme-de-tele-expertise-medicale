@@ -30,4 +30,13 @@
         <servlet-name>NurseDashboardServlet</servlet-name>
         <url-pattern>/nurseDashboard</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>PatientRegistrationServlet</servlet-name>
+        <servlet-class>com.example.medicexpert.servlet.PatientRegistrationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientRegistrationServlet</servlet-name>
+        <url-pattern>/registerPatient</url-pattern>
+    </servlet-mapping>
 </web-app>

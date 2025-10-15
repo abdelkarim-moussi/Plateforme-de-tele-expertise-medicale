@@ -2,7 +2,6 @@ package com.example.medicexpert.entity;
 
 import jakarta.persistence.*;
 
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -13,18 +12,16 @@ public class WaitingQueue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private LocalDate arrivalDate;
-    private LocalTime arrivalTime;
+    private LocalDate createdAt;
 
-    @OneToMany(cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
-    @JoinColumn(name = "waitingQueueId")
+    @OneToMany(mappedBy = "waitingQueue",cascade = CascadeType.MERGE,fetch = FetchType.EAGER)
     private List<Patient> patients;
 
     public WaitingQueue(){}
-    public WaitingQueue(List<Patient> patients,LocalDate arrivalDate,LocalTime arrivalTime){
+
+    public WaitingQueue(List<Patient> patients,LocalDate createdAt){
         this.patients = patients;
-        this.arrivalDate = arrivalDate;
-        this.arrivalTime = arrivalTime;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -35,28 +32,12 @@ public class WaitingQueue {
         this.id = id;
     }
 
-    public LocalDate getArrivalDateTime() {
-        return arrivalDate;
-    }
-
-    public void setArrivalDateTime(LocalDate arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
     public LocalDate getArrivalDate() {
-        return arrivalDate;
+        return createdAt;
     }
 
-    public void setArrivalDate(LocalDate arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public LocalTime getArrivalTime() {
-        return arrivalTime;
-    }
-
-    public void setArrivalTime(LocalTime arrivalTime) {
-        this.arrivalTime = arrivalTime;
+    public void setArrivalDate(LocalDate createdAt) {
+        this.createdAt = createdAt;
     }
 
     public List<Patient> getPatients() {
@@ -65,6 +46,21 @@ public class WaitingQueue {
 
     public void setPatients(List<Patient> patients) {
         this.patients = patients;
+    }
+
+    public void addPatientToQueue(Patient patient){
+        patient.setWaitingQueue(this);
+        if(patient.getArrivalTime() == null){
+            patient.setArrivalTime(LocalTime.now());
+        }
+        this.patients.add(patient);
+    }
+
+    public void removePatientFromQueue(Patient patient){
+        if(patient.getWaitingQueue() != null){
+            patients.remove(patient);
+            patient.setWaitingQueue(null);
+        }
     }
 
 }
