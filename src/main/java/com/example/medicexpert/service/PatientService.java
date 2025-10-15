@@ -124,6 +124,9 @@ public class PatientService {
     public List<Patient> getActualQueuePatients(){
 
         WaitingQueue queue = waitingQueueDao.findByDate(LocalDate.now());
+
+        if(queue == null) return null;
+
         List<Patient> patients = patientDao.findAllByQueueId(queue.getId());
         List<Patient> filteredPatients = null;
 

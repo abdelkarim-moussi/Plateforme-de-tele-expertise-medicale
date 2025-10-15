@@ -27,11 +27,11 @@ public class StaphAuthenticationService {
         }
 
         if(staphDao.existByEmail(email)){
-            throw new RegistrationException("email already exist");
+            throw new RegistrationException("email already exist - "+email);
         }
 
         if(password.length() < 8){
-            throw new RegistrationException("password must be at least 8 characters");
+            throw new RegistrationException("password must be at least 8 characters - "+password);
         }
 
         String hashedPassword = passwordHash(password);
@@ -55,15 +55,14 @@ public class StaphAuthenticationService {
         Staph staph = staphDao.findByEmail(email);
 
         if(staph == null){
-            return false;
+            throw new RegistrationException("the staph email doesn't exist - "+email);
         }
 
-        boolean valid = verify(password,staph.getPassword());
+        return verify(password,staph.getPassword());
 
-        return valid;
     }
 
-    private String passwordHash(String password){
+    public String passwordHash(String password){
         BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B,12);
 
         Hash hash = Password.hash(password)

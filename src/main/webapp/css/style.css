@@ -130,3 +130,35 @@ tr:nth-child(even) {
 .add-btn:hover {
     background-color: #218838;
 }
+
+/*doctor dash styles */
+
+.patient-info {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.patient-info h2 {
+    color: #1a73e8;
+    border-bottom: 2px solid #1a73e8;
+    padding-bottom: 5px;
+}
+
+.buttons {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.btn-tele {
+    background-color: #ff9800;
+}
+
+.btn-tele:hover {
+    background-color: #e68900;
+}
+
+textarea {
+    resize: vertical;
+}
