@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -51,9 +52,12 @@ public class StaphLoginServlet extends HttpServlet {
         }
 
         try{
-            boolean authenticate = staphAuthenticationService.authenticate(request ,response ,email.trim() ,password);
-            System.out.println(authenticate);
+            boolean authenticate = staphAuthenticationService.authenticate(email.trim() ,password);
+
             if(authenticate){
+                HttpSession session = request.getSession();
+                session.setAttribute("userEmail",email);
+
                 request.getRequestDispatcher("/authentication/welcome.jsp").forward(request,response);
             }
 

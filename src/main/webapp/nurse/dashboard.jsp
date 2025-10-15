@@ -26,12 +26,12 @@
     <input type="text" name="allergies" placeholder="allergies" class="input"/>
     <input type="text" name="ongoingTreatment" placeholder="ongoingTreatment" class="input"/>
     <h2>Vital signs</h2>
-    <input type="number" name="height" placeholder="height">
-    <input type="number" name="weight" placeholder="weight">
-    <input type="number" name="respiratoryRate" placeholder="respiratoryRate">
-    <input type="number" name="bodyTemperature" placeholder="bodyTemperature">
-    <input type="number" name="heartRate" placeholder="heartRate">
-    <input type="number" name="bloodPressure" placeholder="bloodPressure">
+    <input type="number" name="height" placeholder="height" class="input">
+    <input type="number" name="weight" placeholder="weight" class="input">
+    <input type="number" name="respiratoryRate" placeholder="respiratoryRate" class="input">
+    <input type="number" name="bodyTemperature" placeholder="bodyTemperature" class="input">
+    <input type="number" name="heartRate" placeholder="heartRate" class="input">
+    <input type="number" name="bloodPressure" placeholder="bloodPressure" class="input">
 
     <button type="submit" style="height: 35px;background-color: black;color: white">Register</button>
 </form>

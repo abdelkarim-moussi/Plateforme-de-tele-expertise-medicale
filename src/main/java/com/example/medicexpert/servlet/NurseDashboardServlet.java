@@ -20,9 +20,14 @@ public class NurseDashboardServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         this.patientService = (PatientService) getServletContext().getAttribute("patientService");
-        if(patientService == null){
+        if(this.patientService == null){
             throw new ServletException("an error occurred while trying instantiate the patient service");
         }
+    }
+
+    @Override
+    public void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/nurse/dashboard.jsp").forward(request,response);
     }
 
     @Override
@@ -70,15 +75,8 @@ public class NurseDashboardServlet extends HttpServlet {
             }catch (PatientRegistrationException e){
                 e.printStackTrace();
             }
-
         }
 
-
-    }
-
-    @Override
-    public void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/nurse/dashboard.jsp").forward(request,response);
     }
 
     private boolean validateFields(String firstName,String lastName,

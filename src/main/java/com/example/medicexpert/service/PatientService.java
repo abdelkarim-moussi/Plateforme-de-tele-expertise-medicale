@@ -1,19 +1,31 @@
 package com.example.medicexpert.service;
 
 import com.example.medicexpert.dao.PatientDao;
+import com.example.medicexpert.dao.WaitingQueueDao;
 import com.example.medicexpert.entity.MedicalData;
 import com.example.medicexpert.entity.Patient;
 import com.example.medicexpert.entity.VitalSigns;
+import com.example.medicexpert.entity.WaitingQueue;
 import com.example.medicexpert.util.exception.PatientRegistrationException;
 
+import java.nio.file.Watchable;
+import java.sql.Time;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class PatientService {
 
     private PatientDao patientDao;
-    public PatientService(PatientDao patientDao){
+    private WaitingQueueDao waitingQueueDao;
+
+    public PatientService(PatientDao patientDao, WaitingQueueDao waitingQueueDao){
         this.patientDao = patientDao;
+        this.waitingQueueDao = waitingQueueDao;
     }
 
     public void registerPatient(String firstName, String lastName,
@@ -28,6 +40,7 @@ public class PatientService {
         Patient patient;
         MedicalData mData;
         VitalSigns vSigns;
+
         if(patientDao.existByCNI(CNI)){
 
             patient = patientDao.findByCNI(CNI);
@@ -39,6 +52,7 @@ public class PatientService {
             this.setVitalSigns(vSigns,patient,vitalSigns);
 
             patientDao.update(patient,mData,vSigns);
+            this.addToQueue(patient);
 
         }else {
             patient = new Patient(firstName, lastName, email, phone, dateOfBirth, socialSecurityNumber, address, CNI);
@@ -52,6 +66,22 @@ public class PatientService {
             patient.setVitalSigns(vSigns);
 
             patientDao.save(patient);
+            this.addToQueue(patient);
+        }
+
+    }
+
+    private void addToQueue(Patient patient){
+        List<Patient> patients = new ArrayList<>();
+        patients.add(patient);
+        WaitingQueue registeredQueue = waitingQueueDao.findByDate(LocalDate.now());
+        if(registeredQueue != null){
+            registeredQueue.getPatients().add(patient);
+            waitingQueueDao.update(registeredQueue);
+        }
+        else{
+            WaitingQueue queue = new WaitingQueue(patients, LocalDate.now(), LocalTime.now());
+            waitingQueueDao.save(queue);
         }
 
     }
