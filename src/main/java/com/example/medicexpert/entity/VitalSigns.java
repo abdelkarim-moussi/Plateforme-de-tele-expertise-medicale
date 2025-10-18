@@ -16,13 +16,13 @@ public class VitalSigns {
     private short heartRate;
     private float bloodPressure;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @OneToOne(mappedBy = "vitalSigns")
     private Patient patient;
 
     public VitalSigns(){};
 
-    public VitalSigns(float height,float weight , short respiratoryRate, float bodyTemperature, short heartRate, float bloodPressure){
+    public VitalSigns(float height,float weight , short respiratoryRate,
+                      float bodyTemperature, short heartRate, float bloodPressure){
         this.id = generateId();
         this.height = height;
         this.weight = weight;

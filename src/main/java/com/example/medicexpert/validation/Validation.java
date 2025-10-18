@@ -45,4 +45,16 @@ public class Validation {
         }
         return false;
     }
+
+    public static boolean isValidSecurityNumber(String securityNumber){
+        String pattern = "^S-+[0-9]{8}$";
+        if(securityNumber == null) return false;
+        return securityNumber.matches(pattern);
+    }
+
+    public static boolean isValidCNI(String CNI){
+        String pattern = "^[a-zA-Z]{1,3}+[0-9]{3,8}$";
+        if(CNI == null) return false;
+        return CNI.matches(pattern);
+    }
 }

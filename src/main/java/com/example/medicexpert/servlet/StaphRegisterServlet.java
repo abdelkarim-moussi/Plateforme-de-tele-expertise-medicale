@@ -1,15 +1,10 @@
 package com.example.medicexpert.servlet;
 
-import com.example.medicexpert.dao.StaphDao;
-import com.example.medicexpert.listener.AppContextListener;
 import com.example.medicexpert.service.StaphAuthenticationService;
 import com.example.medicexpert.util.exception.RegistrationException;
 import com.example.medicexpert.validation.Validation;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,7 +13,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/signup")
 public class StaphRegisterServlet extends HttpServlet {
 
     private StaphAuthenticationService staphAuthenticationService;
@@ -91,7 +85,7 @@ public class StaphRegisterServlet extends HttpServlet {
                 request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
                 return;
             }
-            request.setAttribute("succes","user created successfully");
+            request.setAttribute("success","user created successfully");
             request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
 
         } else {

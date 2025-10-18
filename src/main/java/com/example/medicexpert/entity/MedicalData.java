@@ -13,8 +13,7 @@ public class MedicalData {
     private String allergies;
     private String ongoingTreatment ;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+    @OneToOne(mappedBy = "medicalData")
     private Patient patient;
 
     public MedicalData(){}
@@ -24,7 +23,6 @@ public class MedicalData {
         this.antecedents = antecedents;
         this.allergies = allergies;
         this.ongoingTreatment = ongoingTreatment;
-
     }
     public String getId() {
         return this.id;

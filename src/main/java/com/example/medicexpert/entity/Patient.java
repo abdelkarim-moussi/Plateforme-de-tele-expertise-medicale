@@ -2,25 +2,43 @@ package com.example.medicexpert.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "patient")
-public abstract class Patient {
+public class Patient {
     @Id
     private String id;
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
     private String phone;
     private LocalDate dateOfBirth;
+    @Column(unique = true)
+    private String CNI;
     private String socialSecurityNumber;
     private String address;
+    private LocalTime arrivalTime;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medicaldata_id",referencedColumnName = "id")
+    private MedicalData medicalData;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "vitaldigns_id",referencedColumnName = "id")
+    private VitalSigns vitalSigns;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "queue_id")
+    private WaitingQueue waitingQueue;
 
     public Patient() {}
 
-    public Patient(String firstName, String lastName, String email, String phone, LocalDate dateOfBirth,String socialSecurityNumber, String address){
+    public Patient(String firstName, String lastName, String email,
+                   String phone, LocalDate dateOfBirth,String socialSecurityNumber,
+                   String address, String CNI){
         this.id = generateId();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,6 +47,7 @@ public abstract class Patient {
         this.dateOfBirth = dateOfBirth;
         this.socialSecurityNumber = socialSecurityNumber;
         this.address = address;
+        this.CNI = CNI;
     }
 
     public String getId() {
@@ -95,10 +114,49 @@ public abstract class Patient {
         this.address = address;
     }
 
+    public String getCNI() {
+        return CNI;
+    }
+
+    public void setCNI(String CNI) {
+        this.CNI = CNI;
+    }
+
     private String generateId(){
         return UUID.randomUUID().toString().substring(0,12).replace("-","");
     }
 
+    public MedicalData getMedicalData() {
+        return medicalData;
+    }
+
+    public void setMedicalData(MedicalData medicalData) {
+        this.medicalData = medicalData;
+    }
+
+    public VitalSigns getVitalSigns() {
+        return vitalSigns;
+    }
+
+    public void setVitalSigns(VitalSigns vitalSigns) {
+        this.vitalSigns = vitalSigns;
+    }
+
+    public WaitingQueue getWaitingQueue() {
+        return waitingQueue;
+    }
+
+    public void setWaitingQueue(WaitingQueue waitingQueue) {
+        this.waitingQueue = waitingQueue;
+    }
+
+    public LocalTime getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(LocalTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
 
     @Override
     public String toString() {
@@ -110,4 +168,6 @@ public abstract class Patient {
                 "\nphone='" + phone + '\'' +
                 '}';
     }
+
+
 }

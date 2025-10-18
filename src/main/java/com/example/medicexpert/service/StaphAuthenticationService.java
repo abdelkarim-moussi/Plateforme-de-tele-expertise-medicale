@@ -10,9 +10,6 @@ import com.password4j.BcryptFunction;
 import com.password4j.Hash;
 import com.password4j.Password;
 import com.password4j.types.Bcrypt;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 public class StaphAuthenticationService {
 
@@ -23,18 +20,18 @@ public class StaphAuthenticationService {
     }
 
 
-    public void register(String firstName, String lastName, String email, String phone, String password, String role) throws RegistrationException{
+    public boolean register(String firstName, String lastName, String email, String phone, String password, String role) throws RegistrationException{
 
         if(firstName == null || lastName == null || email == null || phone == null || password == null || role == null){
             throw new RegistrationException("all fields are required");
         }
 
         if(staphDao.existByEmail(email)){
-            throw new RegistrationException("email already exist");
+            throw new RegistrationException("email already exist - "+email);
         }
 
         if(password.length() < 8){
-            throw new RegistrationException("password must be at least 8 characters");
+            throw new RegistrationException("password must be at least 8 characters - "+password);
         }
 
         String hashedPassword = passwordHash(password);
@@ -47,30 +44,25 @@ public class StaphAuthenticationService {
         };
 
         staphDao.save(staph);
+        return true;
 
     }
 
-    public boolean authenticate(HttpServletRequest request, HttpServletResponse response, String email, String password) throws RegistrationException {
+    public boolean authenticate(String email, String password) throws RegistrationException {
 
         if(email == null || password == null) return false;
 
         Staph staph = staphDao.findByEmail(email);
 
         if(staph == null){
-            return false;
+            throw new RegistrationException("the staph email doesn't exist - "+email);
         }
 
-        boolean valid = verify(password,staph.getPassword());
+        return verify(password,staph.getPassword());
 
-        if(valid){
-            HttpSession session = request.getSession();
-            session.setAttribute("user",staph);
-        }
-
-        return valid;
     }
 
-    private String passwordHash(String password){
+    public String passwordHash(String password){
         BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B,12);
 
         Hash hash = Password.hash(password)
