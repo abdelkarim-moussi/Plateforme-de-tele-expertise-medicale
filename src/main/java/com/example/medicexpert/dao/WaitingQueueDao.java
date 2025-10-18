@@ -20,7 +20,7 @@ public class WaitingQueueDao {
             try {
                 entityManager = entityManagerFactory.createEntityManager();
                 entityManager.getTransaction().begin();
-                entityManager.persist(waitingQueue);
+                entityManager.merge(waitingQueue);
                 entityManager.getTransaction().commit();
             }finally {
                 if(entityManager != null){

@@ -9,6 +9,21 @@
 <html>
 <head>
     <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        purple: {
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 <h1 style="text-align: center">Login form</h1>

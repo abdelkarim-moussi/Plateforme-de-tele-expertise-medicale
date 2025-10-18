@@ -49,4 +49,22 @@
         <url-pattern>/generalDashboard</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>PatientServlet</servlet-name>
+        <servlet-class>com.example.medicexpert.servlet.PatientServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PatientServlet</servlet-name>
+        <url-pattern>/patient</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ConsultationServlet</servlet-name>
+        <servlet-class>com.example.medicexpert.servlet.ConsultationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConsultationServlet</servlet-name>
+        <url-pattern>/consultation</url-pattern>
+    </servlet-mapping>
+
 </web-app>

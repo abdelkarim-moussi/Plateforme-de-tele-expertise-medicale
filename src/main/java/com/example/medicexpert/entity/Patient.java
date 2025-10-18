@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +34,9 @@ public class Patient {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "queue_id")
     private WaitingQueue waitingQueue;
+
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
+    private List<Consultation> consultations;
 
     public Patient() {}
 
@@ -156,6 +160,14 @@ public class Patient {
 
     public void setArrivalTime(LocalTime arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public List<Consultation> getConsultations() {
+        return consultations;
+    }
+
+    public void setConsultations(List<Consultation> consultations) {
+        this.consultations = consultations;
     }
 
     @Override

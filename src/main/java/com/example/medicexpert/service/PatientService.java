@@ -46,6 +46,8 @@ public class PatientService {
         if(patientDao.existByCNI(CNI)){
 
             patient = patientDao.findByCNI(CNI);
+            patient.setArrivalTime(LocalTime.now());
+
             mData = patientDao.findMedicalDataByPatient(patient);
             vSigns = patientDao.findVitalSignsByPatient(patient);
 
@@ -53,11 +55,13 @@ public class PatientService {
             this.setMedicalData(mData,patient,medicalData);
             this.setVitalSigns(vSigns,patient,vitalSigns);
 
-            patientDao.update(patient,mData,vSigns);
             this.addToQueue(patient);
+            patientDao.update(patient);
 
         }else {
             patient = new Patient(firstName, lastName, email, phone, dateOfBirth, socialSecurityNumber, address, CNI);
+            patient.setArrivalTime(LocalTime.now());
+
             mData = new MedicalData(medicalData.get("antecedents").toString(),medicalData.get("allergies").toString(),medicalData.get("ongoingTreatment").toString());
             vSigns = new VitalSigns(Float.parseFloat(vitalSigns.get("height").toString()), Float.parseFloat(vitalSigns.get("weight").toString()),
                     Short.parseShort(vitalSigns.get("respiratoryRate").toString()), Float.parseFloat(vitalSigns.get("bodyTemperature").toString()),
@@ -67,8 +71,8 @@ public class PatientService {
             patient.setMedicalData(mData);
             patient.setVitalSigns(vSigns);
 
-            patientDao.save(patient);
             this.addToQueue(patient);
+            patientDao.save(patient);
         }
 
     }
@@ -76,13 +80,17 @@ public class PatientService {
     private void addToQueue(Patient patient){
         List<Patient> patients = new ArrayList<>();
         patients.add(patient);
+
         WaitingQueue registeredQueue = waitingQueueDao.findByDate(LocalDate.now());
         if(registeredQueue != null){
-            registeredQueue.getPatients().add(patient);
+            registeredQueue.addPatientToQueue(patient);
+            patient.setWaitingQueue(registeredQueue);
             waitingQueueDao.update(registeredQueue);
         }
         else{
             WaitingQueue queue = new WaitingQueue(patients, LocalDate.now());
+            queue.addPatientToQueue(patient);
+            patient.setWaitingQueue(queue);
             waitingQueueDao.save(queue);
         }
 
@@ -139,5 +147,11 @@ public class PatientService {
 
         return filteredPatients;
 
+    }
+
+    public Patient getSinglePatientData(String id){
+        if(id == null || id.trim().isEmpty()) return null;
+        Patient patient = patientDao.findById(id);
+        return patientDao.findById(id);
     }
 }
