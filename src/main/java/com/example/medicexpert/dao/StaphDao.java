@@ -57,9 +57,13 @@ public class StaphDao {
         EntityManager entityManager = null;
         try {
             entityManager = entityManagerFactory.createEntityManager();
-            return entityManager.createQuery("SELECT s FROM Staph s WHERE s.email = :email", Staph.class)
+            entityManager.getTransaction().begin();
+            Staph dbStaph = entityManager.createQuery("SELECT st FROM Staph st WHERE st.email = :email", Staph.class)
                     .setParameter("email", email)
                     .getSingleResult();
+            entityManager.getTransaction().commit();
+
+            return dbStaph;
         }finally {
             if(entityManager != null){
                 entityManager.close();

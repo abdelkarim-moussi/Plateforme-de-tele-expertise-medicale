@@ -38,6 +38,9 @@ public class Patient {
     @OneToMany(mappedBy = "patient",cascade = CascadeType.MERGE,fetch = FetchType.LAZY)
     private List<Consultation> consultations;
 
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<ExpertiseRequest> expertiseRequests;
+
     public Patient() {}
 
     public Patient(String firstName, String lastName, String email,
@@ -168,6 +171,14 @@ public class Patient {
 
     public void setConsultations(List<Consultation> consultations) {
         this.consultations = consultations;
+    }
+
+    public List<ExpertiseRequest> getExpertiseRequests() {
+        return expertiseRequests;
+    }
+
+    public void setExpertiseRequests(List<ExpertiseRequest> expertiseRequests) {
+        this.expertiseRequests = expertiseRequests;
     }
 
     @Override

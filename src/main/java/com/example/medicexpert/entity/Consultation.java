@@ -3,6 +3,7 @@ package com.example.medicexpert.entity;
 import com.example.medicexpert.enums.ConsultationStatus;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,10 +22,17 @@ public class Consultation {
     private String analysis;
     private String therapeuticStrategy;
     private String optimalSupport;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
+    @ManyToOne
+    @JoinColumn(name = "general_doctor_id")
+    private GeneralDoctor generalDoctor;
+
+    @OneToMany(mappedBy = "consultation", cascade = CascadeType.ALL)
+    private List<ExpertiseRequest> expertiseRequests;
+
 
     public Consultation(){}
     public Consultation(String clinicalExamResult,String symptomAnalyse,String observations,
@@ -137,5 +145,21 @@ public class Consultation {
 
     public String generateId(){
         return UUID.randomUUID().toString().replace("-","").substring(0,9);
+    }
+
+    public List<ExpertiseRequest> getExpertiseRequests() {
+        return expertiseRequests;
+    }
+
+    public void setExpertiseRequests(List<ExpertiseRequest> expertiseRequests) {
+        this.expertiseRequests = expertiseRequests;
+    }
+
+    public GeneralDoctor getGeneralDoctor() {
+        return generalDoctor;
+    }
+
+    public void setGeneralDoctor(GeneralDoctor generalDoctor) {
+        this.generalDoctor = generalDoctor;
     }
 }

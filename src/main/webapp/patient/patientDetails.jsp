@@ -5,127 +5,204 @@
     <meta charset="UTF-8">
     <title>Dossier Medical Patient</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        purple: {
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 </head>
-<body class="bg-gradient-to-br min-h-screen py-8 px-4">
-<div class="max-w-7xl mx-auto relative">
-    <!-- Page Title -->
-    <h1 class="text-4xl font-bold text-white text-center mb-8 drop-shadow-lg bg-gradient-to-r from-purple-700 to-purple-800 py-6 px-8">
-        Dossier Medical - <strong>${patient.firstName} ${patient.lastName}</strong>
-    </h1>
+<body class="bg-white min-h-screen">
+<jsp:include page="/template/header.jsp"/>
+<!-- Header -->
+<header class="bg-black text-white shadow-sm">
+    <div class="max-w-7xl mx-auto px-6 py-4">
+        <h1 class="text-2xl font-semibold">
+            Dossier Médical - ${patient.firstName} ${patient.lastName}
+        </h1>
+        <p class="text-sm text-gray-300 mt-1">Informations complètes du patient</p>
+    </div>
+</header>
 
-    <!-- Patient Card -->
-    <div class="bg-white rounded-2xl shadow-2xl overflow-hidden mb-8">
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-6 py-8">
 
-        <div class="p-8 space-y-8">
+    <!-- Patient Information Card -->
+    <div class="bg-white border border-gray-200 rounded shadow-sm overflow-hidden mb-6">
+        <div class="p-6 space-y-8">
+
             <!-- Informations Personnelles -->
-            <div>
-                <h3 class="text-xl font-semibold text-purple-700 mb-4 pb-2 border-b-2 border-purple-200 flex items-center gap-2">
-                    <div class="w-1 h-6 bg-gradient-to-b from-purple-600 to-purple-700 rounded"></div>
+            <section>
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4 pb-2 border-b border-gray-200">
                     Informations Personnelles
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Nom</div>
-                        <div class="text-base font-medium text-gray-900" id="firstName">${patient.firstName}</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Nom</div>
+                        <div class="text-sm font-semibold text-gray-900" id="firstName">${patient.firstName}</div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Prénom</div>
-                        <div class="text-base font-medium text-gray-900" id="lastName">${patient.lastName}</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Prénom</div>
+                        <div class="text-sm font-semibold text-gray-900" id="lastName">${patient.lastName}</div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Date de naissance</div>
-                        <div class="text-base font-medium text-gray-900" id="dateOfBirth">${patient.dateOfBirth}</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Date de naissance</div>
+                        <div class="text-sm font-semibold text-gray-900" id="dateOfBirth">${patient.dateOfBirth}</div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Numéro Sécurité Sociale</div>
-                        <div class="text-base font-medium text-gray-900" id="socialSecurityNumber">${patient.socialSecurityNumber}</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Numéro Sécurité Sociale</div>
+                        <div class="text-sm font-semibold text-gray-900" id="socialSecurityNumber">${patient.socialSecurityNumber}</div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Données Médicales -->
-            <div>
-                <h3 class="text-xl font-semibold text-purple-700 mb-4 pb-2 border-b-2 border-purple-200 flex items-center gap-2">
-                    <div class="w-1 h-6 bg-gradient-to-b from-purple-600 to-purple-700 rounded"></div>
+            <section>
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4 pb-2 border-b border-gray-200">
                     Données Médicales
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Antécédents</div>
-                        <div class="text-base font-medium text-gray-900" id="antecedents">${patient.medicalData.antecedents}</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-2">Antécédents</div>
+                        <div class="text-sm text-gray-900" id="antecedents">
+                            <c:choose>
+                                <c:when test="${not empty patient.medicalData.antecedents}">
+                                    ${patient.medicalData.antecedents}
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">Aucun antécédent enregistré</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Allergies</div>
-                        <div class="text-base font-medium text-gray-900" id="allergies">${patient.medicalData.allergies}</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-2">Allergies</div>
+                        <div class="text-sm text-gray-900" id="allergies">
+                            <c:choose>
+                                <c:when test="${not empty patient.medicalData.allergies}">
+                                    ${patient.medicalData.allergies}
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">Aucune allergie connue</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow md:col-span-2">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Traitements en cours</div>
-                        <div class="text-base font-medium text-gray-900" id="ongoingTreatment">${patient.medicalData.ongoingTreatment}</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4 md:col-span-2">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-2">Traitements en cours</div>
+                        <div class="text-sm text-gray-900" id="ongoingTreatment">
+                            <c:choose>
+                                <c:when test="${not empty patient.medicalData.ongoingTreatment}">
+                                    ${patient.medicalData.ongoingTreatment}
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">Aucun traitement en cours</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- Signes Vitaux -->
-            <div>
-                <h3 class="text-xl font-semibold text-purple-700 mb-4 pb-2 border-b-2 border-purple-200 flex items-center gap-2">
-                    <div class="w-1 h-6 bg-gradient-to-b from-purple-600 to-purple-700 rounded"></div>
+            <section>
+                <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4 pb-2 border-b border-gray-200">
                     Signes Vitaux
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Taille</div>
-                        <div class="text-base font-medium text-gray-900" id="height">${patient.vitalSigns.weight} cm</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Taille</div>
+                        <div class="text-sm font-semibold text-gray-900" id="height">
+                            <c:choose>
+                                <c:when test="${not empty patient.vitalSigns.height}">
+                                    ${patient.vitalSigns.height} cm
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">-</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Poids</div>
-                        <div class="text-base font-medium text-gray-900" id="weight">${patient.vitalSigns.weight} kg</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Poids</div>
+                        <div class="text-sm font-semibold text-gray-900" id="weight">
+                            <c:choose>
+                                <c:when test="${not empty patient.vitalSigns.weight}">
+                                    ${patient.vitalSigns.weight} kg
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">-</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Fréquence respiratoire</div>
-                        <div class="text-base font-medium text-gray-900" id="respiratoryRate">${patient.vitalSigns.respiratoryRate} respirations/min</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Fréquence respiratoire</div>
+                        <div class="text-sm font-semibold text-gray-900" id="respiratoryRate">
+                            <c:choose>
+                                <c:when test="${not empty patient.vitalSigns.respiratoryRate}">
+                                    ${patient.vitalSigns.respiratoryRate} resp/min
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">-</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Température corporelle</div>
-                        <div class="text-base font-medium text-gray-900" id="bodyTemperature">${patient.vitalSigns.bodyTemperature} °C</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Température corporelle</div>
+                        <div class="text-sm font-semibold text-gray-900" id="bodyTemperature">
+                            <c:choose>
+                                <c:when test="${not empty patient.vitalSigns.bodyTemperature}">
+                                    ${patient.vitalSigns.bodyTemperature} °C
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">-</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Fréquence cardiaque</div>
-                        <div class="text-base font-medium text-gray-900" id="heartRate">${patient.vitalSigns.heartRate} battements/min</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Fréquence cardiaque</div>
+                        <div class="text-sm font-semibold text-gray-900" id="heartRate">
+                            <c:choose>
+                                <c:when test="${not empty patient.vitalSigns.heartRate}">
+                                    ${patient.vitalSigns.heartRate} bpm
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">-</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
-                    <div class="bg-purple-50 rounded-lg px-5 py-4 border-l-4 border-purple-500 hover:shadow-md transition-shadow">
-                        <div class="text-xs font-semibold text-purple-700 uppercase tracking-wide mb-1">Tension artérielle</div>
-                        <div class="text-base font-medium text-gray-900" id="bloodPressure">${patient.vitalSigns.bloodPressure} mmHg</div>
+                    <div class="bg-gray-50 rounded border border-gray-200 p-4">
+                        <div class="text-xs font-medium text-gray-600 uppercase tracking-wide mb-1">Tension artérielle</div>
+                        <div class="text-sm font-semibold text-gray-900" id="bloodPressure">
+                            <c:choose>
+                                <c:when test="${not empty patient.vitalSigns.bloodPressure}">
+                                    ${patient.vitalSigns.bloodPressure} mmHg
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="text-gray-500">-</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
         </div>
     </div>
 
-    <div class="text-center">
-    <form action="${pageContext.request.contextPath}/consultation" method="get">
-        <input type="hidden" name="patientId" value="${patient.id}" />
+    <!-- Action Button -->
+    <div class="flex justify-center">
+        <form action="${pageContext.request.contextPath}/consultation" method="get">
+            <input type="hidden" name="patientId" value="${patient.id}" />
             <button
                     type="submit"
-                    class="bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold py-4 px-8 rounded-lg hover:from-purple-700 hover:to-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 transition-all transform hover:scale-[1.02] shadow-lg">
-                Créer Consultation
+                    class="px-8 py-3 bg-black text-white rounded hover:bg-gray-800 transition-colors shadow-sm font-medium"
+            >
+                Créer une consultation
             </button>
-    </form>
+        </form>
     </div>
 
-</div>
+</main>
+
+<jsp:include page="/template/footer.jsp"/>
 </body>
 </html>

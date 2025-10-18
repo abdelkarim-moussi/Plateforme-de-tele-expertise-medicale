@@ -82,15 +82,15 @@ public class StaphRegisterServlet extends HttpServlet {
                 e.getMessage();
                 errors.put("staphRegister","there was an error while trying to register this user, try again");
                 request.setAttribute("errors",errors);
-                request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
+                request.getRequestDispatcher("/authentication/staphRegistration.jsp").forward(request,response);
                 return;
             }
             request.setAttribute("success","user created successfully");
-            request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
+            request.getRequestDispatcher("/authentication/staphRegistration.jsp").forward(request,response);
 
         } else {
               request.setAttribute("errors",errors);
-              request.getRequestDispatcher("/authentication/signup.jsp").forward(request,response);
+              request.getRequestDispatcher("/authentication/staphRegistration.jsp").forward(request,response);
         }
 
 
@@ -98,7 +98,7 @@ public class StaphRegisterServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException ,IOException{
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/authentication/signup.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/authentication/staphRegistration.jsp");
         requestDispatcher.forward(request,response);
     }
 

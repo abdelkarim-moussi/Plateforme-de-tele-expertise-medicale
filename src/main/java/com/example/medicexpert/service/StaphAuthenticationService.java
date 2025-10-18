@@ -48,9 +48,9 @@ public class StaphAuthenticationService {
 
     }
 
-    public boolean authenticate(String email, String password) throws RegistrationException {
+    public Staph authenticate(String email, String password) throws RegistrationException {
 
-        if(email == null || password == null) return false;
+        if(email == null || password == null) return null;
 
         Staph staph = staphDao.findByEmail(email);
 
@@ -58,7 +58,11 @@ public class StaphAuthenticationService {
             throw new RegistrationException("the staph email doesn't exist - "+email);
         }
 
-        return verify(password,staph.getPassword());
+        if(!verify(password,staph.getPassword())){
+            return null;
+        }
+
+        return staph;
 
     }
 
@@ -71,6 +75,7 @@ public class StaphAuthenticationService {
 
         return hash.getResult();
     }
+
     private boolean verify(String password , String hashedPassword){
         BcryptFunction bcrypt = BcryptFunction.getInstance(Bcrypt.B,12);
 

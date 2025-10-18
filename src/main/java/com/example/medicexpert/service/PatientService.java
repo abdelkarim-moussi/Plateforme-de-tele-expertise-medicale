@@ -140,8 +140,7 @@ public class PatientService {
 
         if(!patients.isEmpty()){
             filteredPatients = patients.stream()
-                    .sorted(Comparator.comparing(Patient::getArrivalTime)
-                    .reversed())
+                    .sorted((Comparator.comparing(Patient::getArrivalTime)))
                     .toList();
         }
 

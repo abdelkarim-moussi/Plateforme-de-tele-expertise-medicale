@@ -11,6 +11,11 @@
         <class>com.example.medicexpert.entity.Patient</class>
         <class>com.example.medicexpert.entity.MedicalData</class>
         <class>com.example.medicexpert.entity.VitalSigns</class>
+        <class>com.example.medicexpert.entity.Consultation</class>
+        <class>com.example.medicexpert.entity.Speciality</class>
+        <class>com.example.medicexpert.entity.ExpertiseRequest</class>
+        <class>com.example.medicexpert.entity.TimeSlot</class>
+        <class>com.example.medicexpert.entity.WaitingQueue</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>

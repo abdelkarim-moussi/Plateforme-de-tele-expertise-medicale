@@ -1,5 +1,7 @@
 package com.example.medicexpert.servlet;
 
+import com.example.medicexpert.entity.Staph;
+import com.example.medicexpert.enums.StaphRole;
 import com.example.medicexpert.service.StaphAuthenticationService;
 import com.example.medicexpert.validation.Validation;
 import jakarta.servlet.ServletException;
@@ -52,13 +54,20 @@ public class StaphLoginServlet extends HttpServlet {
         }
 
         try{
-            boolean authenticate = staphAuthenticationService.authenticate(email.trim() ,password);
+            Staph authenticatedStaph = staphAuthenticationService.authenticate(email.trim() ,password);
 
-            if(authenticate){
+            if(authenticatedStaph != null){
                 HttpSession session = request.getSession();
-                session.setAttribute("userEmail",email);
+                session.setAttribute("user",authenticatedStaph);
 
-                request.getRequestDispatcher("/authentication/welcome.jsp").forward(request,response);
+                StaphRole role = authenticatedStaph.getRole();
+
+                switch (role){
+                    case general_doctor -> response.sendRedirect(request.getContextPath()+"/generalDashboard");
+                    case special_doctor -> response.sendRedirect(request.getContextPath()+"/specialDoctor/dashboard.jsp");
+                    case nurse -> response.sendRedirect(request.getContextPath()+"/nurseDashboard");
+                }
+
             }
 
         } catch (Exception e) {
