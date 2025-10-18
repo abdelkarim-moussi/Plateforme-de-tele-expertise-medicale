@@ -1,7 +1,7 @@
 package com.example.medicexpert.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.example.medicexpert.enums.ConsultationStatus;
+import jakarta.persistence.*;
 
 import java.util.UUID;
 
@@ -10,19 +10,33 @@ public class Consultation {
 
     @Id
     private String id;
+    @Enumerated(EnumType.STRING)
+    private ConsultationStatus status;
     private String clinicalExamResult;
     private String symptomAnalyse;
+    private String observations;
     private String diagnostic;
     private String prescribedTreatment;
+    private String medications;
     private String analysis;
     private String therapeuticStrategy;
     private String optimalSupport;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
     public Consultation(){}
-    public Consultation(String clinicalExamResult,String symptomAnalyse){
+    public Consultation(String clinicalExamResult,String symptomAnalyse,String observations,
+                        String diagnostic, String prescribedTreatment, String medications){
         this.id = generateId();
         this.clinicalExamResult = clinicalExamResult;
         this.symptomAnalyse = symptomAnalyse;
+        this.observations = observations;
+        this.diagnostic = diagnostic;
+        this.prescribedTreatment = prescribedTreatment;
+        this.medications = medications;
+
     }
 
     public String getId() {
@@ -31,6 +45,14 @@ public class Consultation {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public ConsultationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ConsultationStatus status) {
+        this.status = status;
     }
 
     public String getClinicalExamResult() {
@@ -87,6 +109,30 @@ public class Consultation {
 
     public void setOptimalSupport(String optimalSupport) {
         this.optimalSupport = optimalSupport;
+    }
+
+    public String getObservations() {
+        return observations;
+    }
+
+    public void setObservations(String observations) {
+        this.observations = observations;
+    }
+
+    public String getMedications() {
+        return medications;
+    }
+
+    public void setMedications(String medications) {
+        this.medications = medications;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
     public String generateId(){

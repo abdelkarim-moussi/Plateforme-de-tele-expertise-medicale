@@ -1,7 +1,6 @@
 package com.example.medicexpert.servlet;
 
 import com.example.medicexpert.entity.Patient;
-import com.example.medicexpert.listener.AppContextListener;
 import com.example.medicexpert.service.PatientService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;

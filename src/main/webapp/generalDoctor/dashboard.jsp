@@ -6,6 +6,21 @@
     <meta charset="UTF-8">
     <title>Tableau de bord - Médecin Généraliste</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        purple: {
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -37,8 +52,8 @@
                 <td>${patient.phone}</td>
                 <td>${patient.arrivalTime}</td>
                 <td>
-                    <form action="consultationGenerale.jsp" method="get">
-<%--                        <input type="hidden" name="patientId" value="${patient.Id}">--%>
+                    <form action="${pageContext.request.contextPath}/patient" method="get">
+                        <input type="hidden" name="patientId" value="${patient.id}">
                         <button type="submit" class="btn btn-view">Consulter</button>
                     </form>
                 </td>

@@ -61,52 +61,16 @@ public class PatientDao {
         }
     }
 
-    public void update(Patient patient, MedicalData medicalData, VitalSigns vitalSigns){
+    public void update(Patient patient){
         EntityManager entityManager = null;
 
         if(patient != null){
-                String updatePatientQuery = "UPDATE Patient p SET firstName = :firstName, lastName =:lastname, email =:email," +
-                                            "address = :address, dateOfBirth =:dateOfBirth, phone= :phone, " +
-                                            "socialSecurityNumber =:socialSecurityNumber,CNI = :CNI WHERE p.id =:id";
 
-                String updateMDataQuery = "UPDATE MedicalData m SET allergies =:alergies, antecedents =:antecedents," +
-                                           "ongoingTreatment =:ongoingTreatment WHERE m.id =:id";
-                String updateVSignsQuery = "UPDATE VitalSigns v SET height =:height , weight =:weight, respiratoryRate =:respiratoryRate," +
-                                           "heartRate =:heartRate, bloodPressure =:bloodPressure,bodyTemperature =:bodyTemperature WHERE v.id=:id";
             try{
 
                 entityManager = entityManagerFactory.createEntityManager();
-
                 entityManager.getTransaction().begin();
-                entityManager.createQuery(updatePatientQuery)
-                        .setParameter("firstName",patient.getFirstName())
-                        .setParameter("lastname",patient.getLastName())
-                        .setParameter("email",patient.getEmail())
-                        .setParameter("address",patient.getAddress())
-                        .setParameter("dateOfBirth",patient.getDateOfBirth())
-                        .setParameter("phone",patient.getPhone())
-                        .setParameter("socialSecurityNumber",patient.getSocialSecurityNumber())
-                        .setParameter("CNI",patient.getCNI())
-                        .setParameter("id",patient.getId())
-                        .executeUpdate();
-                //update medical data
-                entityManager.createQuery(updateMDataQuery)
-                        .setParameter("alergies",medicalData.getAllergies())
-                        .setParameter("antecedents",medicalData.getAntecedents())
-                        .setParameter("ongoingTreatment",medicalData.getOngoingTreatment())
-                        .setParameter("id",medicalData.getId())
-                        .executeUpdate();
-                //update vital signs
-                entityManager.createQuery(updateVSignsQuery)
-                        .setParameter("height",vitalSigns.getHeight())
-                        .setParameter("weight",vitalSigns.getWeight())
-                        .setParameter("respiratoryRate",vitalSigns.getRespiratoryRate())
-                        .setParameter("heartRate",vitalSigns.getHeartRate())
-                        .setParameter("bloodPressure",vitalSigns.getBloodPressure())
-                        .setParameter("bodyTemperature",vitalSigns.getBodyTemperature())
-                        .setParameter("id",vitalSigns.getId())
-                        .executeUpdate();
-
+                entityManager.merge(patient);
                 entityManager.getTransaction().commit();
             }
             catch (Exception e){
@@ -181,6 +145,34 @@ public class PatientDao {
 
         }finally {
             if(entityManager != null){
+                entityManager.close();
+            }
+        }
+    }
+
+    public Patient findById(String id){
+
+        EntityManager entityManager = null;
+
+        try{
+            entityManager = entityManagerFactory.createEntityManager();
+
+            entityManager.getTransaction().begin();
+            Patient patient = entityManager.createQuery(
+                    "SELECT p FROM Patient p " +
+                       "LEFT JOIN FETCH p.medicalData "+
+                       "LEFT JOIN FETCH p.vitalSigns " +
+                       "LEFT JOIN FETCH p.consultations " +
+                       "LEFT JOIN FETCH p.waitingQueue " +
+                       "WHERE p.id =: id"
+            ,Patient.class).setParameter("id",id)
+                    .getSingleResult();
+            entityManager.getTransaction().commit();
+
+            return patient;
+
+        }finally {
+            if (entityManager != null){
                 entityManager.close();
             }
         }
