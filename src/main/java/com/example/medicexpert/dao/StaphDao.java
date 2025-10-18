@@ -36,7 +36,7 @@ public class StaphDao {
     }
 
 
-    public boolean existByEmail(String email) throws NoResultException {
+    public boolean existByEmail(String email) {
 
         EntityManager entityManager = null;
         try{
